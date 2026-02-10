@@ -1,0 +1,18 @@
+# LangChain Agents Vulnerability Scan Template
+name: LangChain Agents
+description: Detect exposed LangChain AI agent implementations
+author: AASRT
+version: 1.0
+
+queries:
+  - 'http.html:"langchain" http.html:"agent"'
+  - 'product:"LangChain"'
+  - 'http.html:"LangChain" port:8000'
+  - 'http.html:"langchain" http.html:"tool"'
+  - 'http.title:"LangChain" OR http.title:"Langchain"'
+
+tags:
+  - ai-agent
+  - langchain
+  - llm
+  - framework

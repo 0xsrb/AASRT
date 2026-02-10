@@ -1,0 +1,17 @@
+# ClawdBot Vulnerability Scan Template
+name: ClawdBot Instances
+description: Detect exposed ClawdBot AI agent dashboards
+author: AASRT
+version: 1.0
+
+queries:
+  - 'http.title:"ClawdBot Dashboard"'
+  - 'http.html:"ClawdBot" port:3000'
+  - 'product:"ClawdBot"'
+  - 'http.html:"anthropic" http.html:"api_key"'
+  - 'http.html:"ClawdBot" http.html:"execute"'
+
+tags:
+  - ai-agent
+  - anthropic
+  - llm

@@ -1,0 +1,18 @@
+# Custom Query Template Example
+# Copy this file and modify for your own Shodan queries
+
+name: Custom Template
+description: Example custom query template
+author: Your Name
+version: 1.0
+
+# List of Shodan queries to execute
+queries:
+  - 'http.title:"Your Target"'
+  - 'http.html:"keyword" port:8080'
+  - 'product:"ProductName"'
+
+# Tags for categorization
+tags:
+  - custom
+  - example

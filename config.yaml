@@ -1,0 +1,43 @@
+# AI Agent Security Reconnaissance Tool (AASRT)
+# Configuration File
+
+# Shodan Configuration
+shodan:
+  enabled: true
+  rate_limit: 1  # queries per second
+  max_results: 100
+  timeout: 30
+
+# Vulnerability Assessment
+vulnerability_checks:
+  enabled: true
+  passive_only: true
+  timeout_per_check: 10
+
+# Reporting
+reporting:
+  formats:
+    - json
+    - csv
+  output_dir: "./reports"
+  anonymize_by_default: false
+
+# Filtering
+filtering:
+  whitelist_ips: []
+  whitelist_domains: []
+  min_confidence_score: 70
+  exclude_honeypots: true
+
+# Logging
+logging:
+  level: "INFO"
+  file: "./logs/scanner.log"
+  max_size_mb: 100
+  backup_count: 5
+
+# Database
+database:
+  type: "sqlite"
+  sqlite:
+    path: "./data/scanner.db"

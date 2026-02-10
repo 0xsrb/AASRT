@@ -1,0 +1,52 @@
+# =============================================================================
+# AASRT Development & Testing Dependencies
+# =============================================================================
+# Install with: pip install -r requirements.txt -r requirements-dev.txt
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Testing Framework
+# -----------------------------------------------------------------------------
+pytest==8.0.2                   # Testing framework
+pytest-cov==4.1.0               # Coverage reporting
+pytest-mock==3.12.0             # Mocking utilities
+pytest-timeout==2.2.0           # Test timeouts
+pytest-asyncio==0.23.5          # Async test support
+
+# -----------------------------------------------------------------------------
+# Mocking & Test Utilities
+# -----------------------------------------------------------------------------
+responses==0.25.0               # Mock HTTP responses
+freezegun==1.4.0                # Mock datetime
+factory-boy==3.3.0              # Test fixtures factory
+
+# -----------------------------------------------------------------------------
+# Code Quality
+# -----------------------------------------------------------------------------
+flake8==7.0.0                   # Linting
+black==24.2.0                   # Code formatting
+isort==5.13.2                   # Import sorting
+mypy==1.8.0                     # Static type checking
+pylint==3.0.3                   # Additional linting
+
+# -----------------------------------------------------------------------------
+# Security Scanning
+# -----------------------------------------------------------------------------
+bandit==1.7.7                   # Security linting (SAST)
+safety==3.0.1                   # Dependency vulnerability scanning
+pip-audit==2.7.1                # Python package audit
+
+# -----------------------------------------------------------------------------
+# Documentation
+# -----------------------------------------------------------------------------
+sphinx==7.2.6                   # Documentation generator
+sphinx-rtd-theme==2.0.0         # ReadTheDocs theme
+myst-parser==2.0.0              # Markdown support for Sphinx
+
+# -----------------------------------------------------------------------------
+# Development Tools
+# -----------------------------------------------------------------------------
+pre-commit==3.6.2               # Git pre-commit hooks
+ipython==8.22.1                 # Enhanced Python shell
+ipdb==0.13.13                   # IPython debugger
+

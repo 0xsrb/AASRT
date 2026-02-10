@@ -1,0 +1,32 @@
+# ClawSec Advisory Targets
+# Scan templates for systems affected by ClawSec-published advisories
+name: ClawSec Advisory Targets
+description: Scan for systems affected by ClawSec-published security advisories
+author: AASRT
+version: 1.0
+
+queries:
+  # Clawdbot vulnerabilities (per ClawSec advisories)
+  - 'http.title:"ClawdBot Dashboard"'
+  - 'http.html:"clawdbot" http.html:"execute"'
+  - 'product:"ClawdBot" port:3000'
+
+  # Moltbot exposure patterns
+  - 'http.title:"Moltbot Dashboard"'
+  - 'http.title:"Moltbot" http.html:"api"'
+  - 'product:"Moltbot" port:8080'
+
+  # Generic OpenClaw patterns
+  - 'http.html:"OpenClaw" http.html:"agent"'
+  - 'http.title:"OpenClaw" port:3000'
+
+  # AI Agent API exposure (common vulnerability patterns)
+  - 'http.html:"sk-ant-" http.html:"api"'
+  - 'http.html:"anthropic" http.html:"execute"'
+
+tags:
+  - clawsec
+  - threat-intel
+  - cve
+  - ai-agents
+  - critical

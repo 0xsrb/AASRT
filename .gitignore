@@ -1,0 +1,103 @@
+# AASRT .gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Environment variables - NEVER commit these
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Database files
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Reports (may contain sensitive data)
+reports/
+*.json
+!queries/*.yaml
+!config.yaml
+!config.yaml.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# MyPy
+.mypy_cache/
+
+# Secrets and credentials
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+credentials.json
+secrets.yaml
+secrets/
+private/
+
+# Docker
+.docker/
+docker-compose.override.yml
+docker-compose.*.yml
+!docker-compose.yml
+!docker-compose.prod.yml
+
+# Security scan results (may contain sensitive findings)
+security-reports/
+vulnerability-reports/
+*.sarif
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Temporary files
+tmp/
+temp/
+*.tmp

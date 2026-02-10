@@ -1,0 +1,97 @@
+# =============================================================================
+# AASRT Docker Ignore File
+# Excludes files from Docker build context for security and efficiency
+# =============================================================================
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation (not needed in container)
+*.md
+docs/
+LICENSE
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+dist/
+build/
+eggs/
+.eggs/
+wheels/
+
+# Virtual environments
+venv/
+.venv/
+ENV/
+env/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.editorconfig
+
+# Environment files (NEVER include secrets in image)
+.env
+.env.*
+!.env.example
+
+# Local data files (should be mounted as volumes)
+data/
+logs/
+reports/
+*.db
+*.sqlite
+*.sqlite3
+
+# Test files
+tests/
+test_*.py
+*_test.py
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.tox/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker files (prevent recursive copying)
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Secrets and credentials
+*.pem
+*.key
+*.crt
+credentials.json
+secrets.yaml
+secrets/
+private/
+
+# Temporary and backup files
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+*.old
+
+# Security scan results
+security-reports/
+vulnerability-reports/
+*.sarif
+

@@ -1,0 +1,18 @@
+# AutoGPT Vulnerability Scan Template
+name: AutoGPT Instances
+description: Detect exposed AutoGPT AI agent dashboards
+author: AASRT
+version: 1.0
+
+queries:
+  - 'http.title:"Auto-GPT"'
+  - 'http.title:"AutoGPT"'
+  - 'http.html:"autogpt" port:8000'
+  - 'http.html:"Auto-GPT" http.html:"OpenAI"'
+  - 'http.html:"autogpt" http.html:"execute"'
+
+tags:
+  - ai-agent
+  - openai
+  - llm
+  - autonomous

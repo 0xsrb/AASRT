@@ -1,0 +1,71 @@
+# =============================================================================
+# AI Agent Security Reconnaissance Tool (AASRT)
+# Production Dependencies - All versions pinned for reproducible builds
+# =============================================================================
+# To update dependencies: pip install pip-tools && pip-compile requirements.in
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# API Clients
+# -----------------------------------------------------------------------------
+shodan==1.31.0              # Shodan API client for security reconnaissance
+requests==2.31.0            # HTTP library for API calls
+urllib3==2.2.0              # HTTP client (requests dependency, pinned for security)
+
+# -----------------------------------------------------------------------------
+# Data Processing
+# -----------------------------------------------------------------------------
+pandas==2.2.0               # Data manipulation and analysis
+numpy==1.26.4               # Numerical computing (pandas dependency)
+
+# -----------------------------------------------------------------------------
+# Database
+# -----------------------------------------------------------------------------
+sqlalchemy==2.0.35          # ORM for database operations
+alembic==1.13.1             # Database migration support
+greenlet==3.0.3             # SQLAlchemy async support
+
+# -----------------------------------------------------------------------------
+# Reporting
+# -----------------------------------------------------------------------------
+jinja2==3.1.3               # Template engine for report generation
+markupsafe==2.1.5           # HTML escaping (jinja2 dependency)
+
+# -----------------------------------------------------------------------------
+# CLI & UI
+# -----------------------------------------------------------------------------
+click==8.1.7                # Command-line interface framework
+rich==13.7.0                # Terminal formatting and progress bars
+
+# -----------------------------------------------------------------------------
+# Configuration & Utilities
+# -----------------------------------------------------------------------------
+pyyaml==6.0.2               # YAML configuration parsing
+python-dotenv==1.0.1        # Environment variable management
+pydantic==2.6.3             # Data validation and settings management
+pydantic-settings==2.2.1    # Pydantic settings management
+validators==0.22.0          # Input validation helpers
+tenacity==8.2.3             # Retry logic with exponential backoff
+
+# -----------------------------------------------------------------------------
+# Security
+# -----------------------------------------------------------------------------
+cryptography==42.0.5        # Cryptographic operations
+
+# -----------------------------------------------------------------------------
+# Web Dashboard
+# -----------------------------------------------------------------------------
+streamlit==1.30.0           # Web dashboard framework
+plotly==5.18.0              # Interactive visualizations
+watchdog==4.0.0             # File system monitoring (streamlit dependency)
+
+# -----------------------------------------------------------------------------
+# Logging & Monitoring
+# -----------------------------------------------------------------------------
+python-json-logger==2.0.7   # Structured JSON logging
+structlog==24.1.0           # Structured logging framework
+
+# -----------------------------------------------------------------------------
+# Testing (install with: pip install -r requirements.txt -r requirements-dev.txt)
+# -----------------------------------------------------------------------------
+# See requirements-dev.txt for testing and development dependencies

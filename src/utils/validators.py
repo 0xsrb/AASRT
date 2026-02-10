@@ -242,6 +242,7 @@ def sanitize_output(text: str) -> str:
         text = str(text)
 
     # Patterns for sensitive data (order matters - more specific first)
+    # Security: Context-aware patterns to avoid false positives on legitimate hex strings
     patterns = [
         # Anthropic API keys
         (r'sk-ant-[a-zA-Z0-9-_]{20,}', 'sk-ant-***REDACTED***'),
@@ -259,8 +260,17 @@ def sanitize_output(text: str) -> str:
         # Stripe keys
         (r'sk_live_[a-zA-Z0-9]{24,}', 'sk_live_***REDACTED***'),
         (r'sk_test_[a-zA-Z0-9]{24,}', 'sk_test_***REDACTED***'),
-        # Shodan API key (32 hex chars)
-        (r'[a-fA-F0-9]{32}', '***REDACTED_KEY***'),
+        # Shodan API key with context (more specific patterns first)
+        # Pattern 1: Shodan key in environment variable or config context
+        (r'(?i)(?:shodan[_\-]?(?:api)?[_\-]?key|SHODAN_API_KEY)\s*[=:]\s*["\']?([a-fA-F0-9]{32})["\']?',
+         'SHODAN_API_KEY=***REDACTED***'),
+        # Pattern 2: API key in JSON/config context
+        (r'(?i)["\']?(?:api[_\-]?key|apikey)["\']?\s*[=:]\s*["\']?([a-fA-F0-9]{32})["\']?',
+         '"api_key": "***REDACTED***"'),
+        # Pattern 3: Standalone 32-char hex that looks like a key (not preceded by common hash prefixes)
+        # Avoid matching MD5 hashes by checking context - only match if it looks like a credential
+        (r'(?<![a-fA-F0-9])(?:key|token|secret|credential)["\s:=]+["\']?([a-fA-F0-9]{32})["\']?(?![a-fA-F0-9])',
+         '***REDACTED_KEY***'),
         # Generic password patterns
         (r'password["\s:=]+["\']?[\w@#$%^&*!?]+', 'password=***REDACTED***'),
         (r'passwd["\s:=]+["\']?[\w@#$%^&*!?]+', 'passwd=***REDACTED***'),
@@ -269,6 +279,9 @@ def sanitize_output(text: str) -> str:
         (r'Bearer\s+[a-zA-Z0-9._-]+', 'Bearer ***REDACTED***'),
         # Basic auth
         (r'Basic\s+[a-zA-Z0-9+/=]+', 'Basic ***REDACTED***'),
+        # Private keys (PEM format)
+        (r'-----BEGIN (?:RSA |EC |DSA )?PRIVATE KEY-----[\s\S]*?-----END (?:RSA |EC |DSA )?PRIVATE KEY-----',
+         '-----BEGIN PRIVATE KEY-----***REDACTED***-----END PRIVATE KEY-----'),
     ]
 
     result = text

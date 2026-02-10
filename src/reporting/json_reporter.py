@@ -1,12 +1,17 @@
 """JSON report generator for AASRT."""
 
 import json
+import os
+import stat
 from typing import Optional
 
 from .base import BaseReporter, ScanReport
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
+
+# Security: Restrictive file permissions for report files (owner read/write only)
+SECURE_FILE_PERMISSIONS = stat.S_IRUSR | stat.S_IWUSR  # 0o600
 
 
 class JSONReporter(BaseReporter):
@@ -47,8 +52,14 @@ class JSONReporter(BaseReporter):
 
         content = self.generate_string(report)
 
-        with open(filepath, 'w', encoding='utf-8') as f:
-            f.write(content)
+        # Security: Write with restrictive permissions (owner read/write only)
+        fd = os.open(filepath, os.O_CREAT | os.O_WRONLY | os.O_TRUNC, SECURE_FILE_PERMISSIONS)
+        try:
+            with os.fdopen(fd, 'w', encoding='utf-8') as f:
+                f.write(content)
+        except Exception:
+            os.close(fd)
+            raise
 
         logger.info(f"Generated JSON report: {filepath}")
         return filepath

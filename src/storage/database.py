@@ -559,7 +559,7 @@ class Database:
             scan = session.query(Scan).filter(Scan.scan_id == scan_id).first()
             if scan:
                 session.delete(scan)
-                session.commit()
+                # Note: session_scope() commits automatically on successful exit
                 logger.info(f"Deleted scan: {scan_id}")
                 return True
             return False

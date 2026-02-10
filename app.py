@@ -932,7 +932,10 @@ def get_templates():
         config = Config()
         qm = QueryManager(config)
         return sorted(qm.get_available_templates())
-    except:
+    except Exception as e:
+        # Log the error but don't expose details to UI
+        import logging
+        logging.getLogger(__name__).warning(f"Failed to load templates: {e}")
         return []
 
 
@@ -1159,8 +1162,9 @@ def run_scan(
             all_results = query_manager.execute_query(query, max_results=max_results)
         progress_bar.progress(50)
     except Exception as e:
-        st.error(f"SCAN FAILURE: {e}")
+        # Security: Log full error details but show sanitized message to user
         logger.error(f"Scan execution failed: {e}", exc_info=True)
+        st.error("SCAN FAILURE: An error occurred during scanning. Please check logs for details.")
         progress_container.empty()
         return None
 
@@ -1218,7 +1222,9 @@ def run_scan(
         db.add_findings(scan_record.scan_id, unique_results)
         db.update_scan(scan_record.scan_id, status='completed', total_results=len(unique_results), duration_seconds=duration)
     except Exception as e:
-        st.warning(f"Database sync failed: {e}")
+        # Security: Log full error but show sanitized message to user
+        logger.warning(f"Database sync failed: {e}")
+        st.warning("Database sync failed. Results are still available but may not be persisted.")
 
     progress_bar.progress(100)
     status_text.markdown(f"""

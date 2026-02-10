@@ -2,6 +2,7 @@
 
 import json
 import os
+import stat
 import threading
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
@@ -13,6 +14,9 @@ import requests
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
+
+# Security: Restrictive file permissions for cache files (owner read/write only)
+SECURE_FILE_PERMISSIONS = stat.S_IRUSR | stat.S_IWUSR  # 0o600
 
 
 @dataclass
@@ -54,7 +58,8 @@ class ClawSecAdvisory:
         if published and isinstance(published, str):
             try:
                 published = datetime.fromisoformat(published.replace('Z', '+00:00'))
-            except:
+            except (ValueError, TypeError) as e:
+                logger.debug(f"Failed to parse published date: {e}")
                 published = None
 
         return cls(
@@ -166,7 +171,12 @@ class ClawSecFeedManager:
 
         try:
             logger.info(f"Fetching ClawSec feed from {self.feed_url}")
-            response = requests.get(self.feed_url, timeout=self.timeout)
+            # Security: Explicit SSL verification to prevent MITM attacks
+            response = requests.get(
+                self.feed_url,
+                timeout=self.timeout,
+                verify=True  # Explicitly verify SSL certificates
+            )
             response.raise_for_status()
 
             data = response.json()
@@ -240,8 +250,14 @@ class ClawSecFeedManager:
                 'cached_at': datetime.utcnow().isoformat()
             }
 
-            with open(cache_path, 'w') as f:
-                json.dump(cache_data, f, indent=2)
+            # Security: Write with restrictive permissions (owner read/write only)
+            fd = os.open(str(cache_path), os.O_CREAT | os.O_WRONLY | os.O_TRUNC, SECURE_FILE_PERMISSIONS)
+            try:
+                with os.fdopen(fd, 'w') as f:
+                    json.dump(cache_data, f, indent=2)
+            except Exception:
+                os.close(fd)
+                raise
 
             logger.debug(f"ClawSec cache saved to {self.cache_file}")
 

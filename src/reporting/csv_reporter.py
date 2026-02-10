@@ -2,12 +2,17 @@
 
 import csv
 import io
+import os
+import stat
 from typing import List, Optional
 
 from .base import BaseReporter, ScanReport
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
+
+# Security: Restrictive file permissions for report files (owner read/write only)
+SECURE_FILE_PERMISSIONS = stat.S_IRUSR | stat.S_IWUSR  # 0o600
 
 
 class CSVReporter(BaseReporter):
@@ -72,8 +77,14 @@ class CSVReporter(BaseReporter):
 
         content = self.generate_string(report)
 
-        with open(filepath, 'w', encoding='utf-8', newline='') as f:
-            f.write(content)
+        # Security: Write with restrictive permissions (owner read/write only)
+        fd = os.open(filepath, os.O_CREAT | os.O_WRONLY | os.O_TRUNC, SECURE_FILE_PERMISSIONS)
+        try:
+            with os.fdopen(fd, 'w', encoding='utf-8', newline='') as f:
+                f.write(content)
+        except Exception:
+            os.close(fd)
+            raise
 
         logger.info(f"Generated CSV report: {filepath}")
         return filepath
@@ -171,8 +182,14 @@ class CSVReporter(BaseReporter):
         writer.writerow(['Low Findings', report.low_findings])
         writer.writerow(['Average Risk Score', report.average_risk_score])
 
-        with open(filepath, 'w', encoding='utf-8', newline='') as f:
-            f.write(output.getvalue())
+        # Security: Write with restrictive permissions (owner read/write only)
+        fd = os.open(filepath, os.O_CREAT | os.O_WRONLY | os.O_TRUNC, SECURE_FILE_PERMISSIONS)
+        try:
+            with os.fdopen(fd, 'w', encoding='utf-8', newline='') as f:
+                f.write(output.getvalue())
+        except Exception:
+            os.close(fd)
+            raise
 
         logger.info(f"Generated CSV summary: {filepath}")
         return filepath
@@ -214,8 +231,14 @@ class CSVReporter(BaseReporter):
             else:
                 writer.writerow([ip, port, hostname, 'None detected', risk_score])
 
-        with open(filepath, 'w', encoding='utf-8', newline='') as f:
-            f.write(output.getvalue())
+        # Security: Write with restrictive permissions (owner read/write only)
+        fd = os.open(filepath, os.O_CREAT | os.O_WRONLY | os.O_TRUNC, SECURE_FILE_PERMISSIONS)
+        try:
+            with os.fdopen(fd, 'w', encoding='utf-8', newline='') as f:
+                f.write(output.getvalue())
+        except Exception:
+            os.close(fd)
+            raise
 
         logger.info(f"Generated vulnerability CSV: {filepath}")
         return filepath
